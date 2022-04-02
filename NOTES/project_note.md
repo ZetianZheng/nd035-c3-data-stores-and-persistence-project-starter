@@ -19,4 +19,11 @@ The Data Transfer Objects are represented by the [NAME]DTO.java files in the sta
 - Employees
 - Customers
 - pet
-- 
+# Task 4: Create Tables in your Database
+There are a variety of ways to create the tables your program will use. Hibernate can automatically generate them when you launch the application, or you may use a schema.sql to manually define and create the tables. Automatic generation is a simpler, quicker solution and recommended for this project. Just as some of your furry clients would choose to Hibernate, we suggest the same! That being said, you may choose any method you wish.
+
+Once your tables are constructed, review the schema in MySQL workbench or in another tool of your choice. Hibernate’s HQL and Spring Data’s JPQL allow you to work with Java objects, but it’s still useful to look at the SQL schema verify your Entity design produces the type of tables you want.
+```sql
+create user 'sa'@'localhost' identified by 'sa1234'; -- Create the user--
+grant all on critter.* to 'sa'@'localhost'; -- Gives all privileges to that user on new db
+```
