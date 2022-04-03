@@ -27,3 +27,10 @@ Once your tables are constructed, review the schema in MySQL workbench or in ano
 create user 'sa'@'localhost' identified by 'sa1234'; -- Create the user--
 grant all on critter.* to 'sa'@'localhost'; -- Gives all privileges to that user on new db
 ```
+# Task 5: Create a Data Access Layer
+It’s important to isolate requests to the database from the business logic of our application in order to minimize the impact of changes. In other words, we want a pet door to let your marmot, wombat, and capybara reach the database while keeping your product owner out. There are a variety of ways to do this. You can use the Data Access Object pattern, Spring Data Repositories, or some combination thereof to create a single DAO or Repository for each type of Entity you created in the previous step. These will handle persistence requests pertaining to those Entities.
+
+For this project, you may elect to use any of the persistence strategies discussed in this course. That could mean using a JdbcTemplate to execute native queries, using Hibernate and EntityManager, or using Spring Data JPA. Regardless of your approach, be sure to encapsulate persistence logic inside your Data layer.
+
+## JPA Repositories customer rule:
+[2. JPA Repositories](https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html)

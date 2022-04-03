@@ -26,7 +26,7 @@ public class Schedule {
     @CollectionTable(name = "schedule_activity", joinColumns = @JoinColumn(name = "activity_id"))
     private Set<EmployeeSkill> skills;
 
-    /** constructer **/
+    /** constructor **/
     public Schedule() {
 
     }
