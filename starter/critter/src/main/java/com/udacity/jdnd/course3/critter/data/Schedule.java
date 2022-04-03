@@ -22,7 +22,7 @@ public class Schedule {
     private LocalDate localDate;
 
     @Column(name = "activities")
-    @ElementCollection(targetClass = EmployeeSkill.class)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = EmployeeSkill.class)
     @CollectionTable(name = "schedule_activity", joinColumns = @JoinColumn(name = "activity_id"))
     private Set<EmployeeSkill> skills;
 

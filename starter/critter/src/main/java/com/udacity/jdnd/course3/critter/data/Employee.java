@@ -16,12 +16,12 @@ import java.util.Set;
                 column = @Column(name="employee_name"))
 })
 public class Employee extends User{
-    @ElementCollection(targetClass = EmployeeSkill.class)
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = EmployeeSkill.class)
     @CollectionTable(name = "employee_skill", joinColumns = @JoinColumn(name = "employee_id"))
     private Set<EmployeeSkill> skills;
 
-    @Column(name = "availble_day")
-    @ElementCollection(targetClass = DayOfWeek.class)
+    @Column(name = "available_day")
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = DayOfWeek.class)
     @CollectionTable(name = "employee_availableDay", joinColumns = @JoinColumn(name = "employee_id"))
     private Set<DayOfWeek> availableDays;
 
