@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     /** find which employee are available at 'dayOfWeek'**/
-    List<Employee> findByAvailableDaysContaining(DayOfWeek dayOfWeek);
+    List<Employee> findByDaysAvailableContaining(DayOfWeek dayOfWeek);
 
     /** find which employee have specific skill **/
     List<Employee> findBySkillsContaining(EmployeeSkill skill);

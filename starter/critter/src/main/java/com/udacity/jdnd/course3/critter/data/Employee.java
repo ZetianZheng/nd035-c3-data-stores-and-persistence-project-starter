@@ -23,18 +23,18 @@ public class Employee extends User{
     @Column(name = "available_day")
     @ElementCollection(fetch = FetchType.EAGER, targetClass = DayOfWeek.class)
     @CollectionTable(name = "employee_availableDay", joinColumns = @JoinColumn(name = "employee_id"))
-    private Set<DayOfWeek> availableDays;
+    private Set<DayOfWeek> daysAvailable;
 
     /** constructor **/
-    public Employee(Set<EmployeeSkill> skills, Set<DayOfWeek> availableDays) {
+    public Employee(Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
         this.skills = skills;
-        this.availableDays = availableDays;
+        this.daysAvailable = daysAvailable;
     }
 
-    public Employee(Long id, String name, String notes, String phoneNumber, Set<EmployeeSkill> skills, Set<DayOfWeek> availableDays) {
+    public Employee(Long id, String name, String notes, String phoneNumber, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
         super(id, name, notes, phoneNumber);
         this.skills = skills;
-        this.availableDays = availableDays;
+        this.daysAvailable = daysAvailable;
     }
 
     public Employee() {
@@ -49,11 +49,11 @@ public class Employee extends User{
         this.skills = skills;
     }
 
-    public Set<DayOfWeek> getAvailableDays() {
-        return availableDays;
+    public Set<DayOfWeek> getDaysAvailable() {
+        return daysAvailable;
     }
 
-    public void setAvailableDays(Set<DayOfWeek> availableDays) {
-        this.availableDays = availableDays;
+    public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
+        this.daysAvailable = daysAvailable;
     }
 }

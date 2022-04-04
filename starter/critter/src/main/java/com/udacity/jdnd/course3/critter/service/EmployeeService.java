@@ -35,7 +35,7 @@ public class EmployeeService {
 
     public void setAvailability(Set<DayOfWeek> daysAvailable, Long employeeId) {
         Employee employee = getById(employeeId);
-        employee.setAvailableDays(daysAvailable);
+        employee.setDaysAvailable(daysAvailable);
         save(employee);
     }
 
@@ -50,7 +50,7 @@ public class EmployeeService {
          * 2. get all employees with skills set in this middle list.
          * **/
         List<Employee> employees = employeeRepository
-                .findByAvailableDaysContaining(requestDay)
+                .findByDaysAvailableContaining(requestDay)
                 .stream().filter(employee -> employee.getSkills().containsAll(requestSkills))
                 .collect(Collectors.toList());
 
