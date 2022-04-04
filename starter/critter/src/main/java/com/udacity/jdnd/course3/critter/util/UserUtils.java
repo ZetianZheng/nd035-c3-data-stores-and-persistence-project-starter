@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.util;
 import com.udacity.jdnd.course3.critter.data.Customer;
 import com.udacity.jdnd.course3.critter.data.Employee;
 import com.udacity.jdnd.course3.critter.data.Pet;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
@@ -10,17 +11,18 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserUtils {
     PetUtils petUtils;
-    PetService petService;
+    EmployeeService employeeService;
 
     public Customer convertToCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer();
         BeanUtils.copyProperties(customer, customerDTO);
 
         /** set pet list **/
-        List<Pet> pets = convertToPets(customerDTO.getPetIds());
+        List<Pet> pets = petUtils.convertToPetList(customerDTO.getPetIds());
         customer.setPets(pets);
 
         return customer;
@@ -37,17 +39,7 @@ public class UserUtils {
         return customerDTO;
     }
 
-    public List<Pet> convertToPets(List<Long> petIds) {
-        if (petIds == null) {
-            return null;
-        }
-        List<Pet> pets = new ArrayList<>();
-        for (Long id : petIds) {
-            Pet pet = petService.getPetById(id);
-            pets.add(pet);
-        }
-        return pets;
-    }
+
 
     public EmployeeDTO convertToEmployeeDTO(Employee employee)
     {
@@ -75,5 +67,24 @@ public class UserUtils {
             employeeDTOList.add(this.convertToEmployeeDTO(employee));
         }
         return employeeDTOList;
+    }
+
+    /** employee Id <- employee **/
+    public List<Long> convertToEmployeeIds(List<Employee> employees) {
+        return employees.stream()
+                .map(Employee::getId)
+                .collect(Collectors.toList());
+    }
+
+    /** employee Id -> employee **/
+    public List<Employee> convertToEmployeeList(List<Long> employeeIds) {
+        if (employeeIds == null) {
+            return null;
+        }
+        List<Employee> employees = new ArrayList<>();
+        for (Long employeeId : employeeIds) {
+            employees.add(employeeService.getById(employeeId));
+        }
+        return employees;
     }
 }

@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.service;
 
+import com.udacity.jdnd.course3.critter.data.Customer;
 import com.udacity.jdnd.course3.critter.data.Employee;
 import com.udacity.jdnd.course3.critter.data.Pet;
 import com.udacity.jdnd.course3.critter.data.Schedule;
@@ -28,6 +29,11 @@ public class ScheduleService {
 
     public List<Schedule> getSchedulesByEmployee(Employee employee) {
         return scheduleRepository.findByEmployeeListContaining(employee);
+    }
+
+    public List<Schedule> getSchedulesByCustomer(Customer customer) {
+        List<Schedule> schedules = scheduleRepository.findByPetListIn(customer.getPets());
+        return schedules;
     }
 
     public List<Schedule> getSchedulesByPetList(List<Pet> pets) {
