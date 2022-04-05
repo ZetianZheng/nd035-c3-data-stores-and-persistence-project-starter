@@ -5,7 +5,9 @@ import com.udacity.jdnd.course3.critter.data.Pet;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.PetService;
-import com.udacity.jdnd.course3.critter.util.PetUtils;
+import com.udacity.jdnd.course3.critter.transfer.PetTransfer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,14 +19,25 @@ import java.util.List;
 @RequestMapping("/pet")
 public class PetController {
     /** @Autowired **/
-    PetUtils petUtils;
-    PetService petService;
-    CustomerService customerService;
+    private final PetTransfer petTransfer;
+    private final PetService petService;
+    private final CustomerService customerService;
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    public PetController(PetTransfer petTransfer, PetService petService, CustomerService customerService) {
+        this.petTransfer = petTransfer;
+        this.petService = petService;
+        this.customerService = customerService;
+    }
 
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
+        logger.info(petDTO.toString());
+        if (petDTO == null) {
+            return null;
+        }
         /** save pet **/
-        Pet pet = petUtils.convertToPet(petDTO);
+        Pet pet = petTransfer.convertToPet(petDTO);
         petService.save(pet);
 
         /** get Customer and update Customer pets**/
@@ -33,26 +46,26 @@ public class PetController {
         customerService.save(customer);
 
         /** return petDTO **/
-        return petUtils.convertToPetDTO(pet);
+        return petTransfer.convertToPetDTO(pet);
     }
 
     @GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
         Pet pet = petService.getPetById(petId);
-        return petUtils.convertToPetDTO(pet);
+        return petTransfer.convertToPetDTO(pet);
     }
 
     /** todo: 要将:convertToPetDTO改为静态? **/
     @GetMapping
     public List<PetDTO> getPets(){
         List<Pet> pets = petService.getAllPets();
-        return petUtils.convertToPetDTOList(pets);
+        return petTransfer.convertToPetDTOList(pets);
     }
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
         List<Pet> pets = petService.getPetsByCustomerId(ownerId);
-        return petUtils.convertToPetDTOList(pets);
+        return petTransfer.convertToPetDTOList(pets);
     }
 
 

@@ -6,10 +6,13 @@ import javax.persistence.*;
 
 /**
  * inherited by Customer and Employee;
+ * because I used attributeOverrides: https://docs.oracle.com/javaee/6/api/javax/persistence/AttributeOverride.html
+ * must be applied to an entity that extends a mapped superclass or to an embedded field
  */
-@Entity
-@Table(name = "user")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Entity
+//@Table(name = "user")
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

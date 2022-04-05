@@ -16,6 +16,4 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
      * customer -> pet: one to many, so one pet only referenced to one customer
      * **/
     Customer findByPetsContaining(Pet pet);
-
-
 }

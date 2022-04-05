@@ -1,40 +1,51 @@
-package com.udacity.jdnd.course3.critter.util;
+package com.udacity.jdnd.course3.critter.transfer;
 
+import com.udacity.jdnd.course3.critter.controller.UserController;
 import com.udacity.jdnd.course3.critter.data.Customer;
 import com.udacity.jdnd.course3.critter.data.Employee;
 import com.udacity.jdnd.course3.critter.data.Pet;
 import com.udacity.jdnd.course3.critter.service.EmployeeService;
-import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.user.CustomerDTO;
 import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserUtils {
-    PetUtils petUtils;
+@Component
+public class UserTransfer {
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    PetTransfer petTransfer;
     EmployeeService employeeService;
 
     public Customer convertToCustomer(CustomerDTO customerDTO) {
+        logger.info("\n convertToCustomer called 1: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
         Customer customer = new Customer();
-        BeanUtils.copyProperties(customer, customerDTO);
-
+        BeanUtils.copyProperties(customerDTO, customer);
+        logger.info("\n convertToCustomer called 2: \n" + customer.getName() + " : " + customer.getId() + "\n phone number : " + customer.getPhoneNumber());
         /** set pet list **/
-        List<Pet> pets = petUtils.convertToPetList(customerDTO.getPetIds());
-        customer.setPets(pets);
-
+        System.out.println("petids:" + customerDTO.getPetIds());
+        if (customerDTO.getPetIds() != null) {
+            List<Pet> pets = petTransfer.convertToPetList(customerDTO.getPetIds());
+            customer.setPets(pets);
+        }
         return customer;
     }
 
     public CustomerDTO convertToCustomerDTO(Customer customer) {
+        logger.info("\n convertToCustomerDTO called 1: \n" + customer.getName() + " : " + customer.getId() + "\n phone number : " + customer.getPhoneNumber());
         CustomerDTO customerDTO = new CustomerDTO();
-        BeanUtils.copyProperties(customerDTO, customer);
-
+        BeanUtils.copyProperties(customer, customerDTO);
+        logger.info("\n convertToCustomerDTO called 2: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
         /** set petIds **/
-        List<Long> petIds = petUtils.convertToPetIds(customer.getPets());
-        customerDTO.setPetIds(petIds);
+        if (customer.getPets() != null) {
+            List<Long> petIds = petTransfer.convertToPetIds(customer.getPets());
+            customerDTO.setPetIds(petIds);
+        }
 
         return customerDTO;
     }

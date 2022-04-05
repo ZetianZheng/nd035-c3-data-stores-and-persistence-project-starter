@@ -1,10 +1,13 @@
-package com.udacity.jdnd.course3.critter.util;
+package com.udacity.jdnd.course3.critter.transfer;
 
+import com.udacity.jdnd.course3.critter.controller.UserController;
 import com.udacity.jdnd.course3.critter.data.Customer;
 import com.udacity.jdnd.course3.critter.data.Pet;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.PetService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +16,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PetUtils {
-    CustomerService customerService;
-    PetService petService;
+public class PetTransfer {
+    private final CustomerService customerService;
+    private final PetService petService;
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    public PetTransfer(CustomerService customerService, PetService petService) {
+        this.customerService = customerService;
+        this.petService = petService;
+    }
 
     public Pet convertToPet(PetDTO petDTO) {
         Pet pet = new Pet();
-        BeanUtils.copyProperties(pet, petDTO);
+        BeanUtils.copyProperties(petDTO, pet);
 
         /** set customer **/
         Long customerId = petDTO.getOwnerId();
@@ -30,10 +39,12 @@ public class PetUtils {
     }
 
     public List<Pet> convertToPetList(List<Long> petIds) {
-        if (petIds == null) {
-            return null;
-        }
         List<Pet> pets = new ArrayList<>();
+        if (petIds == null || petIds.size() == 0) {
+            logger.warn("petIds is null!");
+            return pets;
+        }
+
         for (Long petId : petIds) {
             pets.add(petService.getPetById(petId));
         }
@@ -42,7 +53,7 @@ public class PetUtils {
 
     public PetDTO convertToPetDTO(Pet pet) {
         PetDTO petDTO = new PetDTO();
-        BeanUtils.copyProperties(petDTO, pet);
+        BeanUtils.copyProperties(pet, petDTO);
 
         /** set customer id **/
         petDTO.setOwnerId(pet.getCustomer().getId());

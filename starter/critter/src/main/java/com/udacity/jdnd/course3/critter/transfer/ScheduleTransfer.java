@@ -1,4 +1,4 @@
-package com.udacity.jdnd.course3.critter.util;
+package com.udacity.jdnd.course3.critter.transfer;
 
 import com.udacity.jdnd.course3.critter.data.Employee;
 import com.udacity.jdnd.course3.critter.data.Pet;
@@ -11,17 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ScheduleUtils {
-    UserUtils userUtils;
-    PetUtils petUtils;
+public class ScheduleTransfer {
+    UserTransfer userTransfer;
+    PetTransfer petTransfer;
 
     public ScheduleDTO convertToScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(scheduleDTO, schedule);
 
         /** translate pets to petIds, employee to employeeIds **/
-        List<Long> petIds = petUtils.convertToPetIds(schedule.getPetList());
-        List<Long> employeeIds = userUtils.convertToEmployeeIds(schedule.getEmployeeList());
+        List<Long> petIds = petTransfer.convertToPetIds(schedule.getPetList());
+        List<Long> employeeIds = userTransfer.convertToEmployeeIds(schedule.getEmployeeList());
         scheduleDTO.setPetIds(petIds);
         scheduleDTO.setEmployeeIds(employeeIds);
         return scheduleDTO;
@@ -32,8 +32,8 @@ public class ScheduleUtils {
         BeanUtils.copyProperties(schedule, scheduleDTO);
 
         /** translate petIds to pets, employeeIds to employee **/
-        List<Pet> pets = petUtils.convertToPetList(scheduleDTO.getPetIds());
-        List<Employee> employees = userUtils.convertToEmployeeList(scheduleDTO.getEmployeeIds());
+        List<Pet> pets = petTransfer.convertToPetList(scheduleDTO.getPetIds());
+        List<Employee> employees = userTransfer.convertToEmployeeList(scheduleDTO.getEmployeeIds());
         schedule.setEmployeeList(employees);
         schedule.setPetList(pets);
         return schedule;
