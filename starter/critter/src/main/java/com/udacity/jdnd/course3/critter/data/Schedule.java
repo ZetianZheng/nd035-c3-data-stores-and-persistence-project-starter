@@ -19,7 +19,7 @@ public class Schedule {
     @ManyToMany
     List<Pet> petList;
 
-    private LocalDate localDate;
+    private LocalDate date;
 
     @Column(name = "activities")
     @ElementCollection(fetch = FetchType.EAGER, targetClass = EmployeeSkill.class)
@@ -31,11 +31,11 @@ public class Schedule {
 
     }
 
-    public Schedule(Long id, List<Employee> employeeList, List<Pet> petList, LocalDate localDate, Set<EmployeeSkill> skills) {
+    public Schedule(Long id, List<Employee> employeeList, List<Pet> petList, LocalDate date, Set<EmployeeSkill> skills) {
         this.id = id;
         this.employeeList = employeeList;
         this.petList = petList;
-        this.localDate = localDate;
+        this.date = date;
         this.skills = skills;
     }
 
@@ -65,12 +65,12 @@ public class Schedule {
         this.petList = petList;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Set<EmployeeSkill> getSkills() {

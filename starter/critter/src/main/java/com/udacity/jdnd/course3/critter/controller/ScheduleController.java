@@ -44,6 +44,7 @@ public class ScheduleController {
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleTransfer.convertToSchedule(scheduleDTO);
+//        logger.info("date: " + schedule.getLocalDate().toString());
         /** * id match 0(Long) - 1(JPA): **/
         Schedule JPASchedule = scheduleService.save(schedule);
 

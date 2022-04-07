@@ -28,11 +28,9 @@ public class UserTransfer {
     }
 
     public Customer convertToCustomer(CustomerDTO customerDTO) {
-        logger.info("   convertToCustomer called");
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
         /** set pet list **/
-        System.out.println("petids:" + customerDTO.getPetIds());
         if (customerDTO.getPetIds() != null) {
             List<Pet> pets = petTransfer.convertToPetList(customerDTO.getPetIds());
             customer.setPets(pets);
@@ -41,7 +39,6 @@ public class UserTransfer {
     }
 
     public CustomerDTO convertToCustomerDTO(Customer customer) {
-        logger.info("  convertToCustomerDTO called:");
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
 

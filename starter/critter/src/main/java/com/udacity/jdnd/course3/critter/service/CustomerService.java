@@ -13,11 +13,14 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
-    @Autowired
-    CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-    @Autowired
-    PetRepository petRepository;
+    private final PetRepository petRepository;
+
+    public CustomerService(CustomerRepository customerRepository, PetRepository petRepository) {
+        this.customerRepository = customerRepository;
+        this.petRepository = petRepository;
+    }
 
     public Customer save(Customer customer) {
         return customerRepository.save(customer);
