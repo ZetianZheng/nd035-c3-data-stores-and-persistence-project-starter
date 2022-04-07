@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Handles web requests related to Schedules.
@@ -44,7 +42,6 @@ public class ScheduleController {
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleTransfer.convertToSchedule(scheduleDTO);
-//        logger.info("date: " + schedule.getLocalDate().toString());
         /** * id match 0(Long) - 1(JPA): **/
         Schedule JPASchedule = scheduleService.save(schedule);
 
