@@ -61,7 +61,6 @@ public class ScheduleController {
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
         List<Schedule> schedules = scheduleService.getSchedulesByPet(petService.getPetById(petId));
-        logger.info(String.valueOf(schedules.get(0).getId()));
         List<ScheduleDTO> scheduleDTOS = scheduleTransfer.convertToScheduleDTOList(schedules);
         return scheduleDTOS;
     }
