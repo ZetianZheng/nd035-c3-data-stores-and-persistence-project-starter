@@ -26,9 +26,10 @@ public class ScheduleController {
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleTransfer.convertToSchedule(scheduleDTO);
-        scheduleService.save(schedule);
+        /** * id match 0(Long) - 1(JPA): **/
+        Schedule JPASchedule = scheduleService.save(schedule);
 
-        return scheduleTransfer.convertToScheduleDTO(schedule);
+        return scheduleTransfer.convertToScheduleDTO(JPASchedule);
     }
 
     @GetMapping

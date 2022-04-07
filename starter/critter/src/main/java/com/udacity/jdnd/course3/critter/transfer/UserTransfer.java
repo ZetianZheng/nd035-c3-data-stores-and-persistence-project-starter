@@ -19,14 +19,18 @@ import java.util.stream.Collectors;
 @Component
 public class UserTransfer {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
-    PetTransfer petTransfer;
-    EmployeeService employeeService;
+    private final PetTransfer petTransfer;
+    private final EmployeeService employeeService;
+
+    public UserTransfer(PetTransfer petTransfer, EmployeeService employeeService) {
+        this.petTransfer = petTransfer;
+        this.employeeService = employeeService;
+    }
 
     public Customer convertToCustomer(CustomerDTO customerDTO) {
-        logger.info("\n convertToCustomer called 1: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
+        logger.info("   convertToCustomer called");
         Customer customer = new Customer();
         BeanUtils.copyProperties(customerDTO, customer);
-        logger.info("\n convertToCustomer called 2: \n" + customer.getName() + " : " + customer.getId() + "\n phone number : " + customer.getPhoneNumber());
         /** set pet list **/
         System.out.println("petids:" + customerDTO.getPetIds());
         if (customerDTO.getPetIds() != null) {
@@ -37,10 +41,10 @@ public class UserTransfer {
     }
 
     public CustomerDTO convertToCustomerDTO(Customer customer) {
-        logger.info("\n convertToCustomerDTO called 1: \n" + customer.getName() + " : " + customer.getId() + "\n phone number : " + customer.getPhoneNumber());
+        logger.info("  convertToCustomerDTO called:");
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(customer, customerDTO);
-        logger.info("\n convertToCustomerDTO called 2: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
+
         /** set petIds **/
         if (customer.getPets() != null) {
             List<Long> petIds = petTransfer.convertToPetIds(customer.getPets());

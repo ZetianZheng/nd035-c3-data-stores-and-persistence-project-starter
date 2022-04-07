@@ -43,13 +43,16 @@ public class UserController {
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        logger.debug("\n saveCustomer called: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
+        logger.info("\n saveCustomer called: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
         Customer customer = userTransfer.convertToCustomer(customerDTO);
-        logger.debug("\n saveCustomer called 2: \n" + customer.getName() + " : " + customer.getId() + "\n phone number : " + customer.getPhoneNumber());
-        customerService.save(customer);
-        logger.debug("\n saveCustomer called 2.5: \n" + customer.getName() + " : " + customer.getId() + "\n phone number : " + customer.getPhoneNumber());
-        CustomerDTO newCustomerDTO = userTransfer.convertToCustomerDTO(customer);
-        logger.debug("\n saveCustomer called 3: \n" + newCustomerDTO.getName() + " : " + newCustomerDTO.getId() + "\n phone number : " + newCustomerDTO.getPhoneNumber());
+        /**
+         * id match 0(Long) - 1(JPA):
+         * when customer been stored in database, the id will be automatically set to 1,
+         * but initially been sat to 0 by Long
+         * **/
+        Customer JPACustomer = customerService.save(customer);
+        CustomerDTO newCustomerDTO = userTransfer.convertToCustomerDTO(JPACustomer);
+
         return newCustomerDTO;
     }
 
@@ -69,15 +72,16 @@ public class UserController {
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
         Customer customer = customerService.getOwnerByPet(petId);
+        logger.info("getOwnerByPet" + customer.toString());
         return userTransfer.convertToCustomerDTO(customer);
     }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = userTransfer.convertToEmployee(employeeDTO);
-        employeeService.save(employee);
+        Employee JPAEmployee = employeeService.save(employee);
 
-        return userTransfer.convertToEmployeeDTO(employee);
+        return userTransfer.convertToEmployeeDTO(JPAEmployee);
     }
 
     @PostMapping("/employee/{employeeId}")

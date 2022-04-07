@@ -36,17 +36,20 @@ public class PetController {
         if (petDTO == null) {
             return null;
         }
-        /** save pet **/
+        /**
+         * save pet
+         * id match 0(Long) - 1(JPA):
+         * **/
         Pet pet = petTransfer.convertToPet(petDTO);
-        petService.save(pet);
+        Pet JPAPet = petService.save(pet);
 
         /** get Customer and update Customer pets**/
         Customer customer = customerService.getById(petDTO.getOwnerId());
-        customer.addPet(pet);
+        customer.addPet(JPAPet);
         customerService.save(customer);
 
         /** return petDTO **/
-        return petTransfer.convertToPetDTO(pet);
+        return petTransfer.convertToPetDTO(JPAPet);
     }
 
     @GetMapping("/{petId}")

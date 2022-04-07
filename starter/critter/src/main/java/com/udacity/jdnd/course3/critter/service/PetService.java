@@ -14,10 +14,8 @@ public class PetService {
     @Autowired
     PetRepository petRepository;
 
-    public Long save(Pet pet) {
-        petRepository.save(pet);
-
-        return pet.getId();
+    public Pet save(Pet pet) {
+       return petRepository.save(pet);
     }
 
     /** [讲讲Java8的Optional类 - SegmentFault 思否](https://segmentfault.com/a/1190000038471657) **/
