@@ -22,7 +22,7 @@ public class ScheduleTransfer {
 
     public ScheduleDTO convertToScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
-        BeanUtils.copyProperties(scheduleDTO, schedule);
+        BeanUtils.copyProperties(schedule, scheduleDTO);
 
         /** translate pets to petIds, employee to employeeIds **/
         List<Pet> petList = schedule.getPetList();
@@ -41,7 +41,7 @@ public class ScheduleTransfer {
 
     public Schedule convertToSchedule(ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
-        BeanUtils.copyProperties(schedule, scheduleDTO);
+        BeanUtils.copyProperties(scheduleDTO, schedule);
 
         /** translate petIds to pets, employeeIds to employee **/
         List<Long> petIds = scheduleDTO.getPetIds();
