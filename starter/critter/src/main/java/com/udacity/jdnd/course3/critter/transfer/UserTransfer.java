@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserTransfer {
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private Logger logger = LoggerFactory.getLogger(UserTransfer.class);
     private final PetTransfer petTransfer;
     private final EmployeeService employeeService;
 
@@ -86,9 +86,16 @@ public class UserTransfer {
 
     /** employee Id <- employee **/
     public List<Long> convertToEmployeeIds(List<Employee> employees) {
-        return employees.stream()
-                .map(Employee::getId)
-                .collect(Collectors.toList());
+        if (employees == null) {
+            return null;
+        }
+
+        List<Long> employeeIds = new ArrayList<>();
+        for (Employee employee : employees) {
+            employeeIds.add(employee.getId());
+        }
+
+        return employeeIds;
     }
 
     /** employee Id -> employee **/
@@ -96,10 +103,12 @@ public class UserTransfer {
         if (employeeIds == null) {
             return null;
         }
+
         List<Employee> employees = new ArrayList<>();
         for (Long employeeId : employeeIds) {
             employees.add(employeeService.getById(employeeId));
         }
+
         return employees;
     }
 }

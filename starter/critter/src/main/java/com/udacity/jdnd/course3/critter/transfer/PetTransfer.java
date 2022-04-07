@@ -32,8 +32,10 @@ public class PetTransfer {
 
         /** set customer **/
         Long customerId = petDTO.getOwnerId();
-        Customer customer = customerService.getById(customerId);
-        pet.setCustomer(customer);
+        if (customerId != null) {
+            Customer customer = customerService.getById(customerId);
+            pet.setCustomer(customer);
+        }
 
         return pet;
     }
@@ -60,17 +62,32 @@ public class PetTransfer {
 
         return petDTO;
     }
-
+    /** pets -> petDTOs **/
     public List<PetDTO> convertToPetDTOList(List<Pet> pets) {
-        return pets.stream()
-                .map(this::convertToPetDTO)
-                .collect(Collectors.toList());
+        if (pets == null) {
+            return null;
+        }
+        List<PetDTO> petDTOList = new ArrayList<>();
+
+        for (Pet pet : pets) {
+            petDTOList.add(this.convertToPetDTO(pet));
+        }
+
+        return petDTOList;
     }
 
+    /** pets -> petIds **/
     public List<Long> convertToPetIds(List<Pet> pets) {
-        return pets.stream()
-                .map(Pet::getId)
-                .collect(Collectors.toList());
+        if (pets == null) {
+            return null;
+        }
+        List<Long> petIds = new ArrayList<>();
+
+        for (Pet pet : pets) {
+            petIds.add(pet.getId());
+        }
+
+        return petIds;
     }
 
 

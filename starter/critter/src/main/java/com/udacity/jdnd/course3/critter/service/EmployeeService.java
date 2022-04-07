@@ -17,8 +17,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
-    @Autowired
-    EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public Employee save(Employee employee) {
         return employeeRepository.save(employee);

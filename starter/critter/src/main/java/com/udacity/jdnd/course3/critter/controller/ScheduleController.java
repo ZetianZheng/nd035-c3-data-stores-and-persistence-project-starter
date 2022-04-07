@@ -7,9 +7,14 @@ import com.udacity.jdnd.course3.critter.service.EmployeeService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
 import com.udacity.jdnd.course3.critter.transfer.ScheduleTransfer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Handles web requests related to Schedules.
@@ -17,11 +22,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/schedule")
 public class ScheduleController {
-    private ScheduleService scheduleService;
-    private EmployeeService employeeService;
-    private PetService petService;
-    private ScheduleTransfer scheduleTransfer;
-    private CustomerService customerService;
+    private final ScheduleService scheduleService;
+    private final EmployeeService employeeService;
+    private final PetService petService;
+    private final ScheduleTransfer scheduleTransfer;
+    private final CustomerService customerService;
+    private Logger logger= LoggerFactory.getLogger(ScheduleController.class);
+
+    public ScheduleController(ScheduleService scheduleService,
+                              EmployeeService employeeService,
+                              PetService petService,
+                              ScheduleTransfer scheduleTransfer,
+                              CustomerService customerService) {
+        this.scheduleService = scheduleService;
+        this.employeeService = employeeService;
+        this.petService = petService;
+        this.scheduleTransfer = scheduleTransfer;
+        this.customerService = customerService;
+    }
 
     @PostMapping
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
@@ -42,6 +60,7 @@ public class ScheduleController {
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
         List<Schedule> schedules = scheduleService.getSchedulesByPet(petService.getPetById(petId));
+        logger.info(String.valueOf(schedules.get(0).getId()));
         List<ScheduleDTO> scheduleDTOS = scheduleTransfer.convertToScheduleDTOList(schedules);
         return scheduleDTOS;
     }
@@ -49,7 +68,7 @@ public class ScheduleController {
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
         List<Schedule> schedules = scheduleService.getSchedulesByEmployee(employeeService.getById(employeeId));
-        List<ScheduleDTO>  scheduleDTOS = scheduleTransfer.convertToScheduleDTOList(schedules);
+        List<ScheduleDTO> scheduleDTOS = scheduleTransfer.convertToScheduleDTOList(schedules);
         return scheduleDTOS;
     }
 

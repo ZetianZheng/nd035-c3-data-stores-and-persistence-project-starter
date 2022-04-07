@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/pet")
 public class PetController {
-    /** @Autowired **/
+    /** field inject **/
     private final PetTransfer petTransfer;
     private final PetService petService;
     private final CustomerService customerService;

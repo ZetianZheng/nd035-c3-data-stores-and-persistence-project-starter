@@ -34,7 +34,6 @@ public class UserController {
     private final UserTransfer userTransfer;
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
-
     public UserController(CustomerService customerService, EmployeeService employeeService, UserTransfer userTransfer) {
         this.customerService = customerService;
         this.employeeService = employeeService;
@@ -43,7 +42,6 @@ public class UserController {
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
-        logger.info("\n saveCustomer called: \n" + customerDTO.getName() + " : " + customerDTO.getId() + "\n phone number : " + customerDTO.getPhoneNumber());
         Customer customer = userTransfer.convertToCustomer(customerDTO);
         /**
          * id match 0(Long) - 1(JPA):
@@ -61,18 +59,16 @@ public class UserController {
         List<CustomerDTO> customerDTOList = new ArrayList<>();
         List<Customer> customerList = customerService.getAllCustomers();
 
-        logger.info("\n getAllCustomers called 1: \n" + customerList.get(0).getName() + ":" + customerList.get(0).getId());
         for (Customer customer : customerList) {
             customerDTOList.add(userTransfer.convertToCustomerDTO(customer));
         }
-        logger.info("\n getAllCustomers called 2: \n" + customerDTOList.get(0).getName() + ":" + customerDTOList.get(0).getId());
+
         return customerDTOList;
     }
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
         Customer customer = customerService.getOwnerByPet(petId);
-        logger.info("getOwnerByPet" + customer.toString());
         return userTransfer.convertToCustomerDTO(customer);
     }
 

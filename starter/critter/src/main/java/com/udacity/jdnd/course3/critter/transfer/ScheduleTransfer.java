@@ -12,18 +12,30 @@ import java.util.List;
 
 @Component
 public class ScheduleTransfer {
-    UserTransfer userTransfer;
-    PetTransfer petTransfer;
+    private final UserTransfer userTransfer;
+    private final PetTransfer petTransfer;
+
+    public ScheduleTransfer(UserTransfer userTransfer, PetTransfer petTransfer) {
+        this.userTransfer = userTransfer;
+        this.petTransfer = petTransfer;
+    }
 
     public ScheduleDTO convertToScheduleDTO(Schedule schedule) {
         ScheduleDTO scheduleDTO = new ScheduleDTO();
         BeanUtils.copyProperties(scheduleDTO, schedule);
 
         /** translate pets to petIds, employee to employeeIds **/
-        List<Long> petIds = petTransfer.convertToPetIds(schedule.getPetList());
-        List<Long> employeeIds = userTransfer.convertToEmployeeIds(schedule.getEmployeeList());
-        scheduleDTO.setPetIds(petIds);
-        scheduleDTO.setEmployeeIds(employeeIds);
+        List<Pet> petList = schedule.getPetList();
+        List<Employee> employeeList = schedule.getEmployeeList();
+
+        if (petList != null) {
+            List<Long> petIds = petTransfer.convertToPetIds(petList);
+            scheduleDTO.setPetIds(petIds);
+        }
+        if (employeeList != null) {
+            List<Long> employeeIds = userTransfer.convertToEmployeeIds(employeeList);
+            scheduleDTO.setEmployeeIds(employeeIds);
+        }
         return scheduleDTO;
     }
 
@@ -32,14 +44,25 @@ public class ScheduleTransfer {
         BeanUtils.copyProperties(schedule, scheduleDTO);
 
         /** translate petIds to pets, employeeIds to employee **/
-        List<Pet> pets = petTransfer.convertToPetList(scheduleDTO.getPetIds());
-        List<Employee> employees = userTransfer.convertToEmployeeList(scheduleDTO.getEmployeeIds());
-        schedule.setEmployeeList(employees);
-        schedule.setPetList(pets);
+        List<Long> petIds = scheduleDTO.getPetIds();
+        List<Long> employeeIds = scheduleDTO.getEmployeeIds();
+        if (petIds != null) {
+            List<Pet> pets = petTransfer.convertToPetList(petIds);
+            schedule.setPetList(pets);
+        }
+        if (employeeIds != null) {
+            List<Employee> employees = userTransfer.convertToEmployeeList(employeeIds);
+            schedule.setEmployeeList(employees);
+        }
+
         return schedule;
     }
 
     public List<ScheduleDTO> convertToScheduleDTOList(List<Schedule> scheduleList) {
+        if (scheduleList == null) {
+            return null;
+        }
+
         List<ScheduleDTO> scheduleDTOS = new ArrayList<>();
 
         for (Schedule schedule : scheduleList) {
