@@ -49,9 +49,7 @@ public class UserController {
          * but initially been sat to 0 by Long
          * **/
         Customer JPACustomer = customerService.save(customer);
-        CustomerDTO newCustomerDTO = userTransfer.convertToCustomerDTO(JPACustomer);
-
-        return newCustomerDTO;
+        return userTransfer.convertToCustomerDTO(JPACustomer);
     }
 
     @GetMapping("/customer")
